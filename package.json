@@ -1,0 +1,29 @@
+{
+  "name": "create-element-ns",
+  "version": "0.0.1",
+  "description": "dom createElement hyperscript with svg, namespace and selector support",
+  "keywords": [
+    "dom", "createElement",
+    "hyperscript",
+    "svg", "xml", "namespace"
+  ],
+  "author": "Hugo Villeneuve",
+  "main": ".index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "cotest": "^1.6.1"
+  },
+  "scripts": {
+    "test": "cotest ./tst",
+    "bld": "webpack ./index.js ./bld/dom-element.min.js --progress --colors --optimize-minimize"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hville/create-element-ns.git"
+  },
+  "private": false,
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}
