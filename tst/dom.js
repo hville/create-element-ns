@@ -2,7 +2,7 @@ var jsdom = require('jsdom').jsdom,
 		ct = require('cotest'),
 		main = require('../index')
 
-var htm = main.htm.el,
+var htm = main.html.el,
 		svg = main.svg.el,
 		DOM = jsdom().defaultView
 
@@ -74,13 +74,14 @@ ct('attribute namespace', function() {
 	ct('===', el2.hasAttributeNS('xmlns','xlink'), true)
 })
 ct('attribute namespace', function() {
-	var fac = main.htm.fn,
+	var fac = main.html.fn,
 			el0 = fac('div')
 	function dec(el) {
 		el.textContent = 'x'
 		return el
 	}
 	ct('===', el0(dec).textContent, 'x')
+	ct('===', el0({textContent: 'y'}).textContent, 'y')
 })
 ct('forced properties and attributes', function() {
 	var ela = htm('div', {

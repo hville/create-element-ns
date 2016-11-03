@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "cotest ./tst",
-    "bld": "webpack ./index.js ./bld/dom-element.min.js --progress --colors --optimize-minimize"
+    "bld": "webpack ./index.js ./bld/create-element-ns.min.js --progress --colors --optimize-minimize"
   },
   "repository": {
     "type": "git",

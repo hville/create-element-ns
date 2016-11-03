@@ -4,9 +4,9 @@ var elm = require('./elm'),
 module.exports = {
 	api: setDocument,
 	ns: setNs,
-	elm: elm,
+	factory: elm,
 	decorators: api.decorators,
-	htm: {
+	html: {
 		el: elm(api.decorators.html),
 		fn: elm(api.decorators.html, true)
 	},

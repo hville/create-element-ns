@@ -1,84 +1,77 @@
-# dom-element
+<!-- markdownlint-disable MD004 MD007 MD010 MD041 MD022 MD024 MD032 MD036 -->
 
-hyperscript
-document.createElement
-w3 selector API
+# create-element-ns
 
-## API
-
-`elm()`
-`htm(string|Object|Function[, Object][, Array|String|Element|Text|Number])`
-`svg()`
-
-Features
-
-* namespace support
-* svg support
-* dom selectors support including attributes
-* properties vs attributes
-* inject document for server and or testing
-
-mithril:
-
-* `key.indexOf(":") !== -1` => el.setAttributeNS(...)
-* `key ~= on*` && `isFunction(val)` => el[key] = val
-* `key === "style"` => setObj
-* `key in element && !isAttribute(key) && ns === undefined` => el[key] = val
-* `value === "boolean"`
-  * if (value) element.setAttribute(key, "")
-  * else element.removeAttribute(key)
-  * else element.setAttribute(key === "className" ? "class" : key, value)
-<!-- markdownlint-disable MD004 MD007 MD010 MD041 MD022 MD024 MD032 -->
-# toposort-keys
-
-*flexible and immutable topological sorting of different DAG structures* -
-***small, simple, no dependencies***
+*dom `createElement` and `createElementNS` hyperscript with svg, namespace and selector support*
 
 • [Example](#example) • [Features](#features) • [API](#api) • [License](#license)
 
-# Example
+## Example
 
 ```javascript
-var tsk = require('toposort-keys')
+var createElementNS = require('create-element-ns')
 
-// similar DAG in 2 different shapes
-var dag0 = [[1,2],[2],[]],
-    dag1 = {a:{preds: ['b', 'c']}, b:{preds: ['c']}, c:{}}
+var createHtmlEl = createElementNS.html.el,
+    createHtmlFac = createElementNS.html.el,
+    createSvgEl = createElementNS.svg.fn,
+    createSvgFac = createElementNS.svg.fn,
 
-// predecessor accessor functions
-function pred0(dag, key) {
-  return dag[key]
+// selectors or attributes
+var divEl1 = createHtmlEl('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
+    divEl2 = createHtmlEl('.i1', {className: 'c1 c2', style:{color: 'blue'}, onclick: function() {}})
+
+// namespace in different ways
+var circleEl1 = createHtmlEl('svg:circle'),
+    circleEl2 = createSvgEl('svg:circle'),
+    circleEl3 = createHtmlEl('circle[xmlns=http://www.w3.org/2000/svg]')
+
+// elementfactories to create multiple modified clones
+function dec(el) {
+  el.textContent = 'x'
+  return el
 }
-function pred1(dag, key) {
-  return dag[key].preds
-}
-
-// sorting
-var sort0 = tsk(dag0, pred0), // [2, 1, 0]
-    sort1 = tsk(dag0, pred0) // ['c', 'b', 'a']
-
-// in-place sorting from previous sort
-sort0 = tsk(dag0, pred0, sort0) // [2, 1, 0]
+var pEl0 = pFac(dec),
+    pEl1 = pFac({textContent: 'x'})
 ```
 
-# Features
+## Features
 
-* more flexible than other implementations for different DAG structures
-* DAG is not modified
-* past sorting orders can be used
+* namespaced tag and namespaced attribute support
+* svg namespace and utility functions pre-defined
+* w3 string selector API, including attributes
+* element decorators for element properties and attributes
+* ability to inject a `document API` for server and/or testing (e.g. `jsdom`)
+* ability to create an element or an element factory
+* ability to create additional namespaces and utility namespaced functions
 
-# API
+There are many hyperscript modules out there
+(*docrel, create-element-from-selector, domator, makeelement, simpel* to name a few)
+but they either don't support *namespaces*, like *svg* or are more oriented to virtual-dom applications.
 
-`sort(dag, predFcn[, lastSort])`
-* `@param {Object} dag` DAG Array, Collection or Object
-* `@param {function} predFcn` predecessor accessor function (see below)
-* `@param {Array} [lastSort]` optional set of keys for faster parsing
-* `@returns {Array}` sorted key list
+## API
 
-`predFcn(dag, key)`
-* `@param {Object} dag` DAG Array, Collection or Object
-* `@param {number|string} key` Object node key or Array node index
-* `@returns {Array}` array of predessor keys or indices
+### Main methods
+
+To create an element (methods that return a DOM Element):
+* `html.el(definition [, options][, content])` => DOM HTMLElement
+* `svg.el(definition [, options][, content])` => DOM SVGElement
+
+To create an element factory (methods that return an `elementFactory` that creates DOM Elements):
+* `html.fn(definition [, options][, content])` => `elementFactory`
+* `svg.fn(definition [, options][, content])` => `elementFactory`
+
+Parameters and outputs
+* `definition`: a string selector, `elementFactory` or DOM Element
+* `options`: an optional object of attributes and properties or an optional `elementDecorator`
+  * `elementDecorator(el) => el'` modifies an element directly
+* `content`: optional series of string, Element and arrays of strings and Elements
+* `elementFactory([elementDecorator|optionObject]) => el`
+
+### Optional additional utilities
+
+* `.api(documentAPI)` injects an external document API like `jsdom`. Uses the global `document` if not specified.
+* `.ns(prefix, URI)` adds additional namespace prefix (svg is already defined). E.g. `.ns('xlink', 'http://www.w3.org/1999/xlink')`
+* `.factory(nsDecorators, partial, URI)` to create additional namespace functions (html and svg are already defined)
 
 # License
 

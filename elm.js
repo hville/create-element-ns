@@ -29,8 +29,10 @@ function elementFactory(decorators, isPartial, ns) {
 				else decorators.children(el, null, cnt)
 			}
 		}
-		return !isPartial ? el
-			: function factory(d) { return d(el.cloneNode(true)) }
+		if (isPartial) return function factory(d) {
+			return is.function(d) ? d(el.cloneNode(true)) : decorate(el, d, decorators)
+		}
+		else return el
 	}
 	return create
 }
