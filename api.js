@@ -1,41 +1,23 @@
 var is = require('./is')
 
-var elementDecorators = {
-	//default
-	'': setOther,
-	// node API
-	children: setChildren,
-	//nodeName: null,
-	textContent: setProp,
-	// element API
-	className: setProp,
-	id: setProp,
-	innerHTML: setProp,
-	tagName: null,
-	xmlns: null,
-	//convenience non-standard items to either force properties or attributes
+var decorators = {
+	a: setAttributes,
+	attrs: setAttributes,
 	attributes: setAttributes,
+	p: setProperties,
+	props: setProperties,
 	properties: setProperties,
-}
-var htmlDecorators = {
-	contentEditable: setProp,
+	children: setChildren,
 	dataset: setObj,
 	style: setStyle,
-	tabIndex: setProp
-}
-var svgDecorators = {
-	id: null, // read only property, revert to defaults with attributes
+	s: setStyle,
 }
 var api = {
 	document: typeof document !== 'undefined' ? document : null,
 	namespaces: {
 		svg : 'http://www.w3.org/2000/svg'
 	},
-	decorators: {
-		element: elementDecorators,
-		html: defaults(htmlDecorators, elementDecorators),
-		svg: defaults(svgDecorators, elementDecorators),
-	}
+	decorators: decorators
 }
 
 module.exports = api
@@ -51,19 +33,19 @@ function setChildren(e, k, v) {
 		if (node) e.appendChild(node)
 	}
 }
-function setProp(e, k, v) {
-	e[k] = v
-}
 function setObj(e, k, o) {
 	for (var ki in o) e[k][ki] = o[ki]
 }
 function setStyle(e, k, v) {
-	if (typeof v === 'object') setObj(e, k, v)
+	if (e.namespaceURI) e.setAttribute(k, styleString(v))
+	else if (typeof v === 'object') setObj(e, k, v)
 	else e[k].cssText = v
 }
-function setOther(e, k, v) {
-	if (k[0] === 'o' && k[1] === 'n' && is.function(v)) e[k] = v
-	else setAttribute(e, k, v)
+function styleString(s) {
+	return is.object(s) ? Object.keys(s).map(styleToString, s).join(';') : s
+}
+function styleToString(k) {
+	return k + ':' + this[k]
 }
 function setAttribute(e, k, v) {
 	var cIdx = k.indexOf(':')
@@ -83,9 +65,4 @@ function setProperties(e, k, o) {
 }
 function setAttributes(e, k, o) {
 	for (var ki in o) setAttribute(e, ki, o[ki])
-}
-// utils
-function defaults(t, s) {
-	for (var k in s) if (t[k] === undefined) t[k] = s[k]
-	return t
 }

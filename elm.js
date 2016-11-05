@@ -42,9 +42,7 @@ function getElement(decorators, def, ns) {
 
 	var cfg = is.string(def) ? parse(def)
 		: is.object(def) ? def
-		: null
-	if (!cfg) throw Error('invalid element definition')
-	//if (cfg.prefix) throw Error('invalid element definition')
+		: {}
 
 	var xmlns = cfg.xmlns || api.namespaces[cfg.prefix] || ns,
 			tag = cfg.tagName || 'div',
@@ -55,7 +53,6 @@ function getElement(decorators, def, ns) {
 function decorate(el, cfg, decorators) {
 	for (var k in cfg) {
 		if (decorators[k]) decorators[k](el, k, cfg[k])
-		else decorators[''](el, k, cfg[k])
 	}
 	return el
 }
