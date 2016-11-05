@@ -1,6 +1,6 @@
 {
   "name": "create-element-ns",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "dom createElement hyperscript with svg, namespace and selector support",
   "keywords": [
     "dom", "createElement",
