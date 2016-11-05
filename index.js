@@ -7,12 +7,12 @@ module.exports = {
 	factory: elm,
 	decorators: api.decorators,
 	html: {
-		el: elm(api.decorators.html),
-		fn: elm(api.decorators.html, true)
+		el: elm(api.decorators),
+		fn: elm(api.decorators, true)
 	},
 	svg: {
-		el: elm(api.decorators.svg, false, api.namespaces.svg),
-		fn: elm(api.decorators.svg, true, api.namespaces.svg)
+		el: elm(api.decorators, false, api.namespaces.svg),
+		fn: elm(api.decorators, true, api.namespaces.svg)
 	}
 }
 function setDocument(doc) {

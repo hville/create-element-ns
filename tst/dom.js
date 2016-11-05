@@ -45,17 +45,17 @@ ct('selectors', function() {
 	ct('===', el.id, 'i1')
 	ct('===', el.className, 'c1 c2')
 	ct('===', el.style.color, 'blue')
-	ct('===', el.getAttribute('style'), 'color: blue;')
+	ct('===', el.getAttribute('style'), 'color:blue')
 })
 ct('decorators', function() {
 	var handler = function(){},
-			el = htm('div', {className: 'c1 c2', id: 'i1', style:{color: 'blue'}, onclick: handler})
+			el = htm('div', {style:{color: 'blue'}, p:{className: 'c1 c2', id: 'i1', onclick: handler}})
 	ct('===', el.nodeName, 'DIV')
 	ct('===', el.id, 'i1')
 	ct('===', el.className, 'c1 c2')
 	ct('===', el.style.color, 'blue')
-	ct('===', el.getAttribute('style'), 'color: blue;')
-	ct('===', el.onclick.constructor, Function)
+	ct('===', el.getAttribute('style'), 'color:blue')
+	//ct('===', el.onclick.constructor, Function)
 })
 ct('element namespace', function() {
 	var el0 = svg('circle'),
@@ -65,15 +65,25 @@ ct('element namespace', function() {
 	ct('===', el1.namespaceURI, 'http://www.w3.org/2000/svg')
 	ct('===', el2.namespaceURI, 'http://www.w3.org/2000/svg')
 })
+ct('styles', function() { //font-weight: bold; color: red; font-size:150%;
+	var el0 = svg('circle[style=font-size:150%;color:blue;]'),
+			el1 = htm('svg:circle[style=font-size:150%;color:blue]'),
+			el2 = svg('circle', {style: {'font-size':'150%', color:'blue'}}),
+			el3 = htm('', {style: {'font-size':'150%', color:'blue'}})
+	ct('===', el0.getAttribute('style'), 'font-size:150%;color:blue;')
+	ct('===', el1.getAttribute('style'), 'font-size:150%;color:blue')
+	ct('===', el2.getAttribute('style'), 'font-size:150%;color:blue')
+	ct('===', el3.getAttribute('style'), 'font-size:150%;color:blue')
+})
 ct('attribute namespace', function() {
 	var el0 = svg('circle[xmlns:xlink="http://www.w3.org/1999/xlink"]'),
 			el1 = svg('circle[xmlns:xlink="http://www.w3.org/1999/xlink"]'),
-			el2 = htm('circle', {'xmlns:xlink':'http://www.w3.org/2000/svg'})
+			el2 = htm('circle', {a: {'xmlns:xlink':'http://www.w3.org/2000/svg'}})
 	ct('===', el0.hasAttributeNS('xmlns','xlink'), true)
 	ct('===', el1.hasAttributeNS('xmlns','xlink'), true)
 	ct('===', el2.hasAttributeNS('xmlns','xlink'), true)
 })
-ct('attribute namespace', function() {
+ct('function decorators', function() {
 	var fac = main.html.fn,
 			el0 = fac('div')
 	function dec(el) {
@@ -81,7 +91,7 @@ ct('attribute namespace', function() {
 		return el
 	}
 	ct('===', el0(dec).textContent, 'x')
-	ct('===', el0({textContent: 'y'}).textContent, 'y')
+	ct('===', el0({p:{textContent: 'y'}}).textContent, 'y')
 })
 ct('forced properties and attributes', function() {
 	var ela = htm('div', {

@@ -18,7 +18,7 @@ var createHtmlEl = createElementNS.html.el,
 
 // selectors or attributes
 var divEl1 = createHtmlEl('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
-    divEl2 = createHtmlEl('.i1', {className: 'c1 c2', style:{color: 'blue'}, onclick: function() {}})
+    divEl2 = createHtmlEl('.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
 
 // namespace in different ways
 var circleEl1 = createHtmlEl('svg:circle'),
@@ -62,7 +62,8 @@ To create an element factory (methods that return an `elementFactory` that creat
 
 Parameters and outputs
 * `definition`: a string selector, `elementFactory` or DOM Element
-* `options`: an optional object of attributes and properties or an optional `elementDecorator`
+* `options`: an optional `qualifier` object of attributes and properties or an optional `elementDecorator` function
+  * `qualifier`: {properties:{}, attributes:{}, style:{}, dataset:{}}. Alias `s`, `a`, `p`, `d`, `props`, `attrs`
   * `elementDecorator(el) => el'` modifies an element directly
 * `content`: optional series of string, Element and arrays of strings and Elements
 * `elementFactory([elementDecorator|optionObject]) => el`
