@@ -1,8 +1,8 @@
 var markers = {
 	tag: {
-		'#': {m: 'v', k: 'id', f: reset, x: 'tag'},
-		'.': {m: 'v', k: 'className', f: append, x: 'tag'},
-		'[': {m: 'k', k: '', f: replaceTrue, x: 'key'},
+		'#': {m: 'v', f: setId, x: 'tag'},
+		'.': {m: 'v', f: appendClass, x: 'tag'},
+		'[': {m: 'k', k: '', f: setAttribute, x: 'key'},
 	},
 	key: {
 		'=': {m: 'v', x: 'val'},
@@ -15,47 +15,52 @@ var markers = {
 }
 
 module.exports = function parseSel(sel) {
-	var att = {}
+	var res = {tagName: '', attributes: {}}
 	var ctx = {
-		x: markers.tag,
+		c: markers.tag,
 		m: 'v',
-		k: 'tagName',
 		v: '',
-		f: reset
+		f: setTN
 	}
-
 	for (var i=0; i<sel.length; ++i) {
-		var act = ctx.x[sel[i]]
+		var act = ctx.c[sel[i]]
 		if (act) {
-			if(act.f) {
-				ctx.f(att, ctx.k, ctx.v)
+			if(act.f) { // callback and reset
+				ctx.f(res, ctx)
 				ctx.k = act.k
 				ctx.f = act.f
 				ctx.v = ''
 			}
 			if (act.m) ctx.m = act.m
-			if (act.x) ctx.x = markers[act.x]
+			if (act.x) ctx.c = markers[act.x]
 		}
 		else ctx[ctx.m] += sel[i]
 	}
-	ctx.f(att, ctx.k, ctx.v)
-
-	return checkTagPrefix(att)
+	ctx.f(res, ctx)
+	return checkTagNS(res)
 }
-function reset(att, k, v) {
-	if (v) att[k] = v
+function setId(res, ctx) {
+	res.attributes.id = ctx.v
 }
-function replaceTrue(att, k, v) {
-	att[k] = v || true
+function setTN(res, ctx) {
+	res.tagName = ctx.v
 }
-function append(att, k, v) {
-	if (v) att[k] = att[k] ? att[k] + ' ' + v : v
+function setAttribute(res, ctx) {
+	if (ctx.k === 'xmlns') res.xmlns = ctx.v
+	else res.attributes[ctx.k] = ctx.v || true
 }
-function checkTagPrefix(att) {
-	var tagIndex = att.tagName && att.tagName.indexOf(':')
-	if (tagIndex >= 0) {
-		att.prefix = att.tagName.slice(0, tagIndex)
-		att.tagName = att.tagName.slice(tagIndex+1)
+function appendClass(res, ctx) {
+	var att = res.attributes
+	if (ctx.v) {
+		if (att.class) att.class += ' ' + ctx.v
+		else att.class = ctx.v
 	}
-	return att
+}
+function checkTagNS(res) {
+	var tagIndex = res.tagName.indexOf(':')
+	if (tagIndex >= 0) {
+		res.prefix = res.tagName.slice(0, tagIndex)
+		res.tagName = res.tagName.slice(tagIndex+1)
+	}
+	return res
 }
