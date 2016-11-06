@@ -1,9 +1,11 @@
 var elm = require('./elm'),
-		api = require('./api')
+		api = require('./api'),
+		is = require('./is')
 
 module.exports = {
 	api: setDocument,
 	ns: setNs,
+	is: is,
 	factory: elm,
 	decorators: api.decorators,
 	html: {
