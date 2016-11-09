@@ -1,29 +1,37 @@
 var jsdom = require('jsdom'),
 		ct = require('cotest'),
-		main = require('../index')
+		ceNS = require('../index')
 
-var htm = main.html.el,
-		svg = main.svg.el,
-		document = jsdom.jsdom(),
-		DOM = document.defaultView
+var document = jsdom.jsdom(),
+		DOM = document.defaultView,
+		htm = ceNS.createElement,
+		svg = htm({element: {xmlns: ceNS.common.namespaces.svg}, partial: true})
 
-main.api(document)
+ceNS.common.document = document
 
+ct('api', function() {
+	ct('===', typeof htm, 'function')
+	ct('===', typeof svg, 'function')
+})
 ct('html', function() {
 	var el = htm('div')
-	ct('===', el.nodeName.toLowerCase(), 'div')
-	ct('!!', el instanceof DOM.Node)
+	ct('===', el instanceof DOM.Node, true)
+	ct('===', typeof el, 'object')
+	//console.log(el)
+	//ct('===', el.nodeName.toLowerCase(), 'div')
 })
 ct('svg', function() {
 	var el = svg('svg')
-	ct('===', el.nodeName, 'svg')
+	ct('===', el.nodeName.toLowerCase(), 'svg')
 	ct('!!', el instanceof DOM.Node)
 })
 ct('svg attributes', function() {
 	var el = svg('svg', svg('path[d=mypath]'))
-	ct('===', el.nodeName, 'svg')
+	ct('===', el.nodeName.toLowerCase(), 'svg')
 	ct('!!', el instanceof DOM.Node)
-	ct('===', el.firstChild.nodeName, 'path')
+	ct('===', el.childNodes.length, 1)
+	ct('===', el.firstChild instanceof DOM.Node, true)
+	//ct('===', el.firstChild.nodeName, 'path')
 })
 ct('html text nodes', function() {
 	var el = htm('div', 'one', [2, 'three'])
@@ -46,7 +54,7 @@ ct('mixed nested namespace', function() {
 	ct('===', el.children.length, 2)
 })
 ct('selectors', function() {
-	var el = htm('.c1#i1[style="color:blue"].c2')
+	var el = htm('div.c1#i1[style="color:blue"].c2')
 	ct('===', el.nodeName, 'DIV')
 	ct('===', el.id, 'i1')
 	ct('===', el.className, 'c1 c2')
@@ -75,7 +83,7 @@ ct('styles', function() { //font-weight: bold; color: red; font-size:150%;
 	var el0 = svg('circle[style=font-size:150%;color:blue;]'),
 			el1 = htm('svg:circle[style=font-size:150%;color:blue]'),
 			el2 = svg('circle', {style: {'font-size':'150%', color:'blue'}}),
-			el3 = htm('', {style: {'font-size':'150%', color:'blue'}})
+			el3 = htm('div', {style: {'font-size':'150%', color:'blue'}})
 	ct('===', el0.getAttribute('style'), 'font-size:150%;color:blue;')
 	ct('===', el1.getAttribute('style'), 'font-size:150%;color:blue')
 	ct('===', el2.getAttribute('style'), 'font-size:150%;color:blue')
@@ -90,14 +98,9 @@ ct('attribute namespace', function() {
 	ct('===', el2.hasAttributeNS('xmlns','xlink'), true)
 })
 ct('function decorators', function() {
-	var fac = main.html.fn,
-			el0 = fac('div')
-	function dec(el) {
-		el.textContent = 'x'
-		return el
-	}
-	ct('===', el0(dec).textContent, 'x')
-	ct('===', el0({p:{textContent: 'y'}}).textContent, 'y')
+	var fac = htm('p', {partial: true}),
+			el0 = fac({p:{textContent: 'y'}})
+	ct('===', el0.textContent, 'y')
 })
 ct('forced properties and attributes', function() {
 	var ela = htm('div', {

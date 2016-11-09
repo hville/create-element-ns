@@ -20,8 +20,11 @@ var markers = {
  * @returns {Object} markup definition
  */
 module.exports = function parseSel(sel, def) {
-	if (!def) def = {attributes: {}} // [, tagName: ''][, xmlns: ''][, prefix: '']
-	else if (!def.attributes) def.attributes = {}
+	if (!def) def = {attributes: {}, element:{}} // [, tagName: ''][, xmlns: ''][, prefix: '']
+	else {
+		if (!def.attributes) def.attributes = {}
+		if (!def.element) def.element = {}
+	}
 
 	var ctx = {
 		c: markers.tag,
@@ -57,17 +60,18 @@ function appendClass(res, ctx) {
 	}
 }
 function setAttribute(res, ctx) {
-	if (ctx.k === 'xmlns') res.xmlns = ctx.v
+	if (ctx.k === 'xmlns') res.element.xmlns = ctx.v
 	else res.attributes[ctx.k] = ctx.v || true
 }
 function setTN(res, ctx) {
-	res.tagName = ctx.v
+	res.element.tagName = ctx.v
 }
 function checkTagNS(res) {
-	var tagIndex = res.tagName.indexOf(':')
+	var tagName = res.element.tagName,
+			tagIndex = tagName.indexOf(':')
 	if (tagIndex >= 0) {
-		res.prefix = res.tagName.slice(0, tagIndex)
-		res.tagName = res.tagName.slice(tagIndex+1)
+		res.element.prefix = tagName.slice(0, tagIndex)
+		res.element.tagName = tagName.slice(tagIndex+1)
 	}
 	return res
 }

@@ -18,7 +18,7 @@ var createHtmlEl = createElementNS.html.el,
 
 // selectors or attributes
 var divEl1 = createHtmlEl('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
-    divEl2 = createHtmlEl('.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
+    divEl2 = createHtmlEl('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
 
 // namespace in different ways
 var circleEl1 = createHtmlEl('svg:circle'),
@@ -26,11 +26,7 @@ var circleEl1 = createHtmlEl('svg:circle'),
     circleEl3 = createHtmlEl('circle[xmlns=http://www.w3.org/2000/svg]')
 
 // elementfactories to create multiple modified clones
-function dec(el) {
-  el.textContent = 'x'
-  return el
-}
-var pEl0 = pFac(dec),
+var pEl0 = pFac('p', {textContent: 'x', partial: true}),
     pEl1 = pFac({textContent: 'x'})
 ```
 

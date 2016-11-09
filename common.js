@@ -1,6 +1,7 @@
-var is = require('./is')
+var is = require('./is'),
+		sel = require('./sel')
 
-var api = {
+var common = {
 	document: typeof document !== 'undefined' ? document : null,
 	namespaces: {
 		svg : 'http://www.w3.org/2000/svg'
@@ -11,22 +12,29 @@ var api = {
 		style: setStyle, s: setStyle,
 		dataset: setObj,
 		children: setChildren,
-	}
+	},
+	parseSelector: sel,
+	is: is
 }
-
-module.exports = api
+module.exports = common
 
 // setters
-function setChildren(e, k, v) {
+function setChildren(e, k, v) { // inspired in parts from REDOM
 	if (v.length === 1 && is.stringlike(v[0]) && !e.childNodes.length) e.textContent = v[0]
 	else {
+		var ptr = e.firstChild
 		for (var i=0; i<v.length; ++i) {
 			var itm = v[i]
 			var node = is.node(itm) ? itm
-				: is.stringlike(itm) ? api.document.createTextNode(itm)
-				: is.node(itm) ? itm
+				: is.stringlike(itm) ? common.document.createTextNode(itm)
+				: is.function(itm) ? itm()
 				: null
-			if (node) e.appendChild(node)
+			if (node && node !== ptr) e.appendChild(node, ptr)
+		}
+		while (ptr) {
+			var next = ptr.nextSibling
+			e.removeChild(ptr)
+			ptr = next
 		}
 	}
 }
