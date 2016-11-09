@@ -1,36 +1,33 @@
 var is = require('./is')
 
-var decorators = {
-	a: setAttributes,
-	attrs: setAttributes,
-	attributes: setAttributes,
-	p: setProperties,
-	props: setProperties,
-	properties: setProperties,
-	children: setChildren,
-	dataset: setObj,
-	style: setStyle,
-	s: setStyle,
-}
 var api = {
 	document: typeof document !== 'undefined' ? document : null,
 	namespaces: {
 		svg : 'http://www.w3.org/2000/svg'
 	},
-	decorators: decorators
+	decorators: {
+		attributes: setAttributes, attrs: setAttributes, a: setAttributes,
+		properties: setProperties, props: setProperties, p: setProperties,
+		style: setStyle, s: setStyle,
+		dataset: setObj,
+		children: setChildren,
+	}
 }
 
 module.exports = api
 
 // setters
 function setChildren(e, k, v) {
-	for (var i=0; i<v.length; ++i) {
-		var itm = v[i]
-		var node = is.node(itm) ? itm
-			: is.stringlike(itm) ? api.document.createTextNode(itm)
-			: is.node(itm) ? itm
-			: null
-		if (node) e.appendChild(node)
+	if (v.length === 1 && is.stringlike(v[0]) && !e.childNodes.length) e.textContent = v[0]
+	else {
+		for (var i=0; i<v.length; ++i) {
+			var itm = v[i]
+			var node = is.node(itm) ? itm
+				: is.stringlike(itm) ? api.document.createTextNode(itm)
+				: is.node(itm) ? itm
+				: null
+			if (node) e.appendChild(node)
+		}
 	}
 }
 function setObj(e, k, o) {
