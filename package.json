@@ -1,15 +1,20 @@
 {
   "name": "create-element-ns",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "dom createElement hyperscript with svg, namespace and selector support",
   "keywords": [
-    "dom", "createElement",
+    "dom",
+    "createElement",
     "hyperscript",
-    "svg", "xml", "namespace"
+    "svg",
+    "xml",
+    "namespace"
   ],
   "author": "Hugo Villeneuve",
   "main": ".index.js",
-  "dependencies": {},
+  "dependencies": {
+    "object-assign": "^4.1.0"
+  },
   "devDependencies": {
     "cotest": "^1.6.1"
   },

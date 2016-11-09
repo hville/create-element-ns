@@ -1,20 +1,22 @@
 var elm = require('./elm'),
 		api = require('./api'),
-		is = require('./is')
+		is = require('./is'),
+		sel = require('./sel')
 
 module.exports = {
 	api: setDocument,
 	ns: setNs,
+	sel: sel,
 	is: is,
 	factory: elm,
 	decorators: api.decorators,
 	html: {
-		el: elm(api.decorators),
-		fn: elm(api.decorators, true)
+		el: elm(),
+		fn: elm({partial: true})
 	},
 	svg: {
-		el: elm(api.decorators, false, api.namespaces.svg),
-		fn: elm(api.decorators, true, api.namespaces.svg)
+		el: elm({xmlns: api.namespaces.svg}),
+		fn: elm({xmlns: api.namespaces.svg, partial: true})
 	}
 }
 function setDocument(doc) {

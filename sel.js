@@ -13,9 +13,16 @@ var markers = {
 		']': {x: 'tag'}
 	}
 }
+/**
+ * parse Element Selector string and return a markup definition
+ * @param {string} sel - W3 selector string
+ * @param {Object} [def] - predefined options
+ * @returns {Object} markup definition
+ */
+module.exports = function parseSel(sel, def) {
+	if (!def) def = {attributes: {}} // [, tagName: ''][, xmlns: ''][, prefix: '']
+	else if (!def.attributes) def.attributes = {}
 
-module.exports = function parseSel(sel) {
-	var res = {tagName: '', attributes: {}}
 	var ctx = {
 		c: markers.tag,
 		m: 'v',
@@ -26,7 +33,7 @@ module.exports = function parseSel(sel) {
 		var act = ctx.c[sel[i]]
 		if (act) {
 			if(act.f) { // callback and reset
-				ctx.f(res, ctx)
+				ctx.f(def, ctx)
 				ctx.k = act.k
 				ctx.f = act.f
 				ctx.v = ''
@@ -36,18 +43,11 @@ module.exports = function parseSel(sel) {
 		}
 		else ctx[ctx.m] += sel[i]
 	}
-	ctx.f(res, ctx)
-	return checkTagNS(res)
+	ctx.f(def, ctx)
+	return checkTagNS(def)
 }
 function setId(res, ctx) {
 	res.attributes.id = ctx.v
-}
-function setTN(res, ctx) {
-	res.tagName = ctx.v
-}
-function setAttribute(res, ctx) {
-	if (ctx.k === 'xmlns') res.xmlns = ctx.v
-	else res.attributes[ctx.k] = ctx.v || true
 }
 function appendClass(res, ctx) {
 	var att = res.attributes
@@ -55,6 +55,13 @@ function appendClass(res, ctx) {
 		if (att.class) att.class += ' ' + ctx.v
 		else att.class = ctx.v
 	}
+}
+function setAttribute(res, ctx) {
+	if (ctx.k === 'xmlns') res.xmlns = ctx.v
+	else res.attributes[ctx.k] = ctx.v || true
+}
+function setTN(res, ctx) {
+	res.tagName = ctx.v
 }
 function checkTagNS(res) {
 	var tagIndex = res.tagName.indexOf(':')

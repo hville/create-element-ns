@@ -1,12 +1,13 @@
-var jsdom = require('jsdom').jsdom,
+var jsdom = require('jsdom'),
 		ct = require('cotest'),
 		main = require('../index')
 
 var htm = main.html.el,
 		svg = main.svg.el,
-		DOM = jsdom().defaultView
+		document = jsdom.jsdom(),
+		DOM = document.defaultView
 
-main.api(DOM.document)
+main.api(document)
 
 ct('html', function() {
 	var el = htm('div')
@@ -33,6 +34,11 @@ ct('html text content', function() {
 	var el = htm('div', [2])
 	ct('===', el.textContent, '2')
 	ct('===', el.children.length, 0)
+})
+ct('html falsy children', function() {
+	var el = htm('div', '', 0, null, [undefined, 0])
+	ct('===', el.childNodes.length, 2)
+	ct('===', el.childNodes[1].textContent, '0')
 })
 ct('mixed nested namespace', function() {
 	var el = htm('div', svg('svg'), htm('p', 'text'))
