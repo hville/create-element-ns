@@ -11,23 +11,23 @@
 ```javascript
 var createElementNS = require('create-element-ns')
 
-var createHtmlEl = createElementNS.html.el,
-    createHtmlFac = createElementNS.html.el,
-    createSvgEl = createElementNS.svg.fn,
-    createSvgFac = createElementNS.svg.fn,
+var html = createElementNS.html,
+    createHtmlFac = createElementNS.html({partial: true}),
+    svg = createElementNS.svg
 
 // selectors or attributes
-var divEl1 = createHtmlEl('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
-    divEl2 = createHtmlEl('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
+var divEl1 = html('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
+    divEl2 = html('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
 
 // namespace in different ways
-var circleEl1 = createHtmlEl('svg:circle'),
-    circleEl2 = createSvgEl('svg:circle'),
-    circleEl3 = createHtmlEl('circle[xmlns=http://www.w3.org/2000/svg]')
+var circleEl1 = html('svg:circle'),
+    circleEl2 = svg('svg:circle'),
+    circleEl3 = html('circle[xmlns=http://www.w3.org/2000/svg]')
+    circleEl3 = html('circle', {element: {xmlns : 'http://www.w3.org/2000/svg'}})
 
-// elementfactories to create multiple modified clones
-var pEl0 = pFac('p', {textContent: 'x', partial: true}),
-    pEl1 = pFac({textContent: 'x'})
+// partial application to reate multiple modified clones
+var pFactory = html('p', {textContent: 'x', partial: true}),
+    pEl1 = pFactory({textContent: 'x'})
 ```
 
 ## Features
@@ -49,12 +49,11 @@ but they either don't support *namespaces*, like *svg* or are more oriented to v
 ### Main methods
 
 To create an element (methods that return a DOM Element):
-* `html.el(definition [, options][, content])` => DOM HTMLElement
-* `svg.el(definition [, options][, content])` => DOM SVGElement
+* `html(definition [, options][, content])` => `HTMLElement` || `elementFactory`
+* `svg(definition [, options][, content])` => `SVGElement` || `elementFactory`
 
-To create an element factory (methods that return an `elementFactory` that creates DOM Elements):
-* `html.fn(definition [, options][, content])` => `elementFactory`
-* `svg.fn(definition [, options][, content])` => `elementFactory`
+If there is no tagName defined or if there is a partial property `{partial: true}` in the arguments,
+the function returns a factory instead of an element.
 
 Parameters and outputs
 * `definition`: a string selector, `elementFactory` or DOM Element

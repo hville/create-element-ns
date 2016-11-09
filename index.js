@@ -3,5 +3,6 @@ var factory = require('./elm'),
 
 module.exports = {
 	common: common,
-	createElement: factory()
+	html: factory(),
+	svg: factory({element: {xmlns: common.namespaces.svg}})
 }

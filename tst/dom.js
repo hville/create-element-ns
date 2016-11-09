@@ -4,8 +4,8 @@ var jsdom = require('jsdom'),
 
 var document = jsdom.jsdom(),
 		DOM = document.defaultView,
-		htm = ceNS.createElement,
-		svg = htm({element: {xmlns: ceNS.common.namespaces.svg}, partial: true})
+		htm = ceNS.html,
+		svg = ceNS.svg
 
 ceNS.common.document = document
 
