@@ -7,7 +7,7 @@ var document = jsdom.jsdom(),
 		htm = ceNS.html,
 		svg = ceNS.svg
 
-ceNS.common.document = document
+ceNS.dom.document = document
 
 ct('api', function() {
 	ct('===', typeof htm, 'function')
@@ -17,8 +17,7 @@ ct('html', function() {
 	var el = htm('div')
 	ct('===', el instanceof DOM.Node, true)
 	ct('===', typeof el, 'object')
-	//console.log(el)
-	//ct('===', el.nodeName.toLowerCase(), 'div')
+	ct('===', el.nodeName.toLowerCase(), 'div')
 })
 ct('svg', function() {
 	var el = svg('svg')
@@ -63,13 +62,12 @@ ct('selectors', function() {
 })
 ct('decorators', function() {
 	var handler = function(){},
-			el = htm('div', {style:{color: 'blue'}, p:{className: 'c1 c2', id: 'i1', onclick: handler}})
+			el = htm('div', {style:{color: 'blue'}, props:{className: 'c1 c2', id: 'i1', onclick: handler}})
 	ct('===', el.nodeName, 'DIV')
 	ct('===', el.id, 'i1')
 	ct('===', el.className, 'c1 c2')
 	ct('===', el.style.color, 'blue')
 	ct('===', el.getAttribute('style'), 'color:blue')
-	//ct('===', el.onclick.constructor, Function)
 })
 ct('element namespace', function() {
 	var el0 = svg('circle'),
@@ -92,14 +90,14 @@ ct('styles', function() { //font-weight: bold; color: red; font-size:150%;
 ct('attribute namespace', function() {
 	var el0 = svg('circle[xmlns:xlink="http://www.w3.org/1999/xlink"]'),
 			el1 = svg('circle[xmlns:xlink="http://www.w3.org/1999/xlink"]'),
-			el2 = htm('circle', {a: {'xmlns:xlink':'http://www.w3.org/2000/svg'}})
+			el2 = htm('circle', {attrs: {'xmlns:xlink':'http://www.w3.org/2000/svg'}})
 	ct('===', el0.hasAttributeNS('xmlns','xlink'), true)
 	ct('===', el1.hasAttributeNS('xmlns','xlink'), true)
 	ct('===', el2.hasAttributeNS('xmlns','xlink'), true)
 })
 ct('function decorators', function() {
 	var fac = htm('p', {partial: true}),
-			el0 = fac({p:{textContent: 'y'}})
+			el0 = fac({props:{textContent: 'y'}})
 	ct('===', el0.textContent, 'y')
 })
 ct('forced properties and attributes', function() {

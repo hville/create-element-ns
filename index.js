@@ -1,8 +1,12 @@
-var factory = require('./elm'),
-		common = require('./common')
+var dom = require('dom-document'),
+		factory = require('./elm'),
+		decorators = require('./decorators'),
+		namespaces = require('./namespaces')
 
 module.exports = {
-	common: common,
+	dom: dom,
+	namespaces: namespaces,
+	decorators: decorators,
 	html: factory(),
-	svg: factory({element: {xmlns: common.namespaces.svg}})
+	svg: factory({xmlns: 'http://www.w3.org/2000/svg'})
 }
