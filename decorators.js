@@ -1,22 +1,15 @@
-var is = require('./is'),
-		sel = require('./sel')
+var dom = require('dom-document'),
+		is = require('./is')
 
-var common = {
-	document: typeof document !== 'undefined' ? document : null,
-	namespaces: {
-		svg : 'http://www.w3.org/2000/svg'
-	},
-	decorators: {
-		attributes: setAttributes, attrs: setAttributes, a: setAttributes,
-		properties: setProperties, props: setProperties, p: setProperties,
-		style: setStyle, s: setStyle,
-		dataset: setObj,
-		children: setChildren,
-	},
-	parseSelector: sel,
-	is: is
+var decorators = {
+	attributes: setAttributes, attrs: setAttributes,
+	properties: setProperties, props: setProperties,
+	style: setStyle,
+	dataset: setObj,
+	children: setChildren,
 }
-module.exports = common
+
+module.exports = decorators
 
 // setters
 function setChildren(e, k, v) { // inspired in parts from REDOM
@@ -26,7 +19,7 @@ function setChildren(e, k, v) { // inspired in parts from REDOM
 		for (var i=0; i<v.length; ++i) {
 			var itm = v[i]
 			var node = is.node(itm) ? itm
-				: is.stringlike(itm) ? common.document.createTextNode(itm)
+				: is.stringlike(itm) ? dom.document.createTextNode(itm)
 				: is.function(itm) ? itm()
 				: null
 			if (node && node !== ptr) e.appendChild(node, ptr)
