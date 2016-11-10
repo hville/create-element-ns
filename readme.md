@@ -58,16 +58,22 @@ the function returns a factory instead of an element.
 Parameters and outputs
 * `definition`: a string selector, `elementFactory` or DOM Element
 * `options`: an optional `qualifier` object of attributes and properties or an optional `elementDecorator` function
-  * `qualifier`: {properties:{}, attributes:{}, style:{}, dataset:{}}. Alias `s`, `a`, `p`, `d`, `props`, `attrs`
+  * `qualifier`: {properties:{}, attributes:{}, style:{}, dataset:{}}. Alias: `props`, `attrs`
   * `elementDecorator(el) => el'` modifies an element directly
 * `content`: optional series of string, Element and arrays of strings and Elements
 * `elementFactory([elementDecorator|optionObject]) => el`
 
 ### Optional additional utilities
+	dom: dom,
+	namespaces: namespaces,
+	decorators: decorators,
+	html: factory(),
+	svg: factory({xmlns: 'http://www.w3.org/2000/svg'})
+}
 
-* `.api(documentAPI)` injects an external document API like `jsdom`. Uses the global `document` if not specified.
-* `.ns(prefix, URI)` adds additional namespace prefix (svg is already defined). E.g. `.ns('xlink', 'http://www.w3.org/1999/xlink')`
-* `.factory(nsDecorators, partial, URI)` to create additional namespace functions (html and svg are already defined)
+* `.dom.document` injects an external document API like `jsdom`. Uses the global `document` if not specified.
+* `.namespaces` adds additional namespace prefix (svg is already defined). E.g. `.namespaces.xlink: 'http://www.w3.org/1999/xlink'`
+* `.factory(options)` to create additional preset functions E.g. `xlink = factory({xmlns: 'http://www.w3.org/1999/xlink'})`
 
 # License
 

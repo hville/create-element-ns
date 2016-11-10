@@ -13,7 +13,9 @@
   "author": "Hugo Villeneuve",
   "main": ".index.js",
   "dependencies": {
-    "object-assign": "^4.1.0"
+    "dom-document": "^1.0.0",
+    "object-assign": "^4.1.0",
+    "parse-element-selector": "^0.1.0"
   },
   "devDependencies": {
     "cotest": "^1.6.1"
