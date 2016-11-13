@@ -3,10 +3,12 @@ var dom = require('dom-document'),
 		decorators = require('./decorators'),
 		namespaces = require('./namespaces')
 
+var el = factory()
+el.svg = el({xmlns: 'http://www.w3.org/2000/svg'})
+
 module.exports = {
 	dom: dom,
 	namespaces: namespaces,
 	decorators: decorators,
-	html: factory(),
-	svg: factory({xmlns: 'http://www.w3.org/2000/svg'})
+	el: el
 }

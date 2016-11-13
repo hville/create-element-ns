@@ -11,22 +11,21 @@
 ```javascript
 var createElementNS = require('create-element-ns')
 
-var html = createElementNS.html,
-    createHtmlFac = createElementNS.html({partial: true}),
-    svg = createElementNS.svg
+var el = createElementNS.el,
+    createHtmlFac = createElementNS.el({partial: true}),
 
 // selectors or attributes
-var divEl1 = html('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
-    divEl2 = html('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
+var divEl1 = el('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
+    divEl2 = el('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
 
 // namespace in different ways
-var circleEl1 = html('svg:circle'),
-    circleEl2 = svg('svg:circle'),
-    circleEl3 = html('circle[xmlns=http://www.w3.org/2000/svg]')
-    circleEl3 = html('circle', {element: {xmlns : 'http://www.w3.org/2000/svg'}})
+var circleEl1 = el('svg:circle'),
+    circleEl2 = el.svg('circle'),
+    circleEl3 = el('circle[xmlns=http://www.w3.org/2000/svg]')
+    circleEl3 = el('circle', {element: {xmlns : 'http://www.w3.org/2000/svg'}})
 
 // partial application to reate multiple modified clones
-var pFactory = html('p', {textContent: 'x', partial: true}),
+var pFactory = el('p', {textContent: 'x', partial: true}),
     pEl1 = pFactory({textContent: 'x'})
 ```
 
@@ -49,8 +48,8 @@ but they either don't support *namespaces*, like *svg* or are more oriented to v
 ### Main methods
 
 To create an element (methods that return a DOM Element):
-* `html(definition [, options][, content])` => `HTMLElement` || `elementFactory`
-* `svg(definition [, options][, content])` => `SVGElement` || `elementFactory`
+* `el(definition [, options][, content])` => `HTMLElement` || `elementFactory`
+* `el.svg(definition [, options][, content])` => `SVGElement` || `elementFactory`
 
 If there is no tagName defined or if there is a partial property `{partial: true}` in the arguments,
 the function returns a factory instead of an element.

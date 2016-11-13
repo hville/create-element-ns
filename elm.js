@@ -4,6 +4,8 @@ var dom = require('dom-document'),
 		is = require('./is'),
 		parse = require('parse-element-selector')
 
+var assign = Object.assign
+
 module.exports = elementFactory
 
 function elementFactory(config) {
@@ -14,7 +16,7 @@ function elementFactory(config) {
 			var arg = arguments[i]
 
 			if (i === 0 && !cfg.element) {
-				if (is.string(arg)) copyKeys(cfg, parse(arg))
+				if (is.string(arg)) assign(cfg, parse(arg))
 				else if (is.node(arg)) cfg.element = arg
 				else if (is.function(arg)) cfg.element = arg(cfg)
 				else if (Array.isArray(arg)) flatConcat(cfg.children, arg)
@@ -37,7 +39,7 @@ function elementFactory(config) {
 		cfg.partial = false
 		return elementFactory(cfg)
 	}
-	return config ? copyKeys(create, config) : create
+	return config ? assign(create, config) : create
 }
 function decorate(el, cfg) {
 	for (var k in cfg) {
@@ -50,16 +52,12 @@ function flatConcat(arr, val) {
 	else arr.push(val)
 	return arr
 }
-function copyKeys(t, s) {
-	for (var i=0, ks=Object.keys(s); i<ks.length; ++i) t[ks[i]] = s[ks[i]]
-	return t
-}
 function clone2(t, s) {
 	for (var i=0, ks=Object.keys(s); i<ks.length; ++i) {
 		var k = ks[i]
 		t[k] = is.node(s[k]) ? s[k].cloneNode(false)
 			: Array.isArray(s[k]) ? s[k].slice()
-			: is.object(s[k]) ? copyKeys({}, s[k])
+			: is.object(s[k]) ? assign({}, s[k])
 			: s[k]
 	}
 	return t

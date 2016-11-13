@@ -4,8 +4,8 @@ var jsdom = require('jsdom'),
 
 var document = jsdom.jsdom(),
 		DOM = document.defaultView,
-		htm = ceNS.html,
-		svg = ceNS.svg
+		htm = ceNS.el,
+		svg = htm.svg
 
 ceNS.dom.document = document
 
@@ -31,6 +31,11 @@ ct('svg attributes', function() {
 	ct('===', el.childNodes.length, 1)
 	ct('===', el.firstChild instanceof DOM.Node, true)
 	//ct('===', el.firstChild.nodeName, 'path')
+})
+ct('svg style attributes', function() {
+	var el = svg('svg[style="display: none;"]')
+	ct('===', el.hasAttribute('style'), true)
+	ct('===', el.getAttribute('style'), 'display: none;')
 })
 ct('html text nodes', function() {
 	var el = htm('div', 'one', [2, 'three'])
