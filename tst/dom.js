@@ -7,7 +7,7 @@ var document = jsdom.jsdom(),
 		htm = ceNS.el,
 		svg = htm.svg
 
-ceNS.dom.document = document
+ceNS.global.document = document
 
 ct('api', function() {
 	ct('===', typeof htm, 'function')
