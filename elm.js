@@ -5,16 +5,15 @@ var dom = require('dom-document'),
 		decorators = require('./decorators'),
 		namespaces = require('./namespaces'),
 		is = require('./is'),
-		parse = require('parse-element-selector')
-
-var assign = Object.assign
+		parse = require('parse-element-selector'),
+		mergeKeys = require('./merge-keys')
 
 module.exports = elementFactory
 
 function elementFactory(config) {
 	function create(/*[,sel][,opt][,cnt]*/) {
-		var cfg = merge({}, create.config)
-		for (var i=0; i<arguments.length; ++i) merge(cfg, parseArgument(arguments[i], i))
+		var cfg = mergeKeys({}, create.defaults)
+		for (var i=0; i<arguments.length; ++i) mergeKeys(cfg, parseArgument(arguments[i], i))
 
 		if (!cfg.element && cfg.tag) {
 			var xmlns = cfg.xmlns || namespaces[cfg.prefix],
@@ -26,7 +25,7 @@ function elementFactory(config) {
 		cfg.partial = false
 		return elementFactory(cfg)
 	}
-	create.config = config ? assign(create, config) : {}
+	create.defaults = config || {}
 	return create
 }
 function decorate(el, cfg) {
@@ -34,21 +33,6 @@ function decorate(el, cfg) {
 		if (decorators[k]) decorators[k].call(cfg, el, k, cfg[k])
 	}
 	return el
-}
-function flatConcat(arr, val) {
-	if (Array.isArray(val)) for (var i=0; i<val.length; ++i) flatConcat(arr, val[i])
-	else arr.push(val)
-	return arr
-}
-function merge(t, s) {
-	for (var i=0, ks=Object.keys(s); i<ks.length; ++i) {
-		var k = ks[i]
-		t[k] = is.node(s[k]) ? s[k].cloneNode(false)
-			: Array.isArray(s[k]) ? flatConcat(t[k] || [], s[k])
-			: is.object(s[k]) ? assign({}, s[k])
-			: s[k]
-	}
-	return t
 }
 function parseArgument(arg, idx) {
 	switch (idx) { /* eslint no-fallthrough: 0 */
