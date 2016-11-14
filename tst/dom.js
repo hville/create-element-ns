@@ -102,8 +102,10 @@ ct('attribute namespace', function() {
 })
 ct('function decorators', function() {
 	var fac = htm('p', {partial: true}),
-			el0 = fac({props:{textContent: 'y'}})
+			el0 = fac({props:{textContent: 'y'}}),
+			el1 = fac({props:{textContent: 'z'}})
 	ct('===', el0.textContent, 'y')
+	ct('===', el1.textContent, 'z')
 })
 ct('forced properties and attributes', function() {
 	var ela = htm('div', {
