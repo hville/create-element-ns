@@ -14,7 +14,9 @@ function mergePair(t, s) {
 	for (var i=0, ks=Object.keys(s); i<ks.length; ++i) {
 		var k = ks[i],
 				v = s[k]
-		t[k] = Array.isArray(v) ? flatConcat(t[k] || [], v)
+		t[k] = is.stringlike(v) ? v
+			: !v ? t[k]
+			: Array.isArray(v) ? flatConcat(t[k] || [], v)
 			: v.cloneNode ? v.cloneNode(true)
 			: v.clone ? v.clone()
 			: is.object(v) ? Object.assign(t[k] || {}, v)
