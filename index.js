@@ -4,7 +4,7 @@ var global = require('dom-document'),
 		namespaces = require('./namespaces')
 
 var el = factory()
-el.svg = el({xmlns: 'http://www.w3.org/2000/svg'})
+el.svg = factory({xmlns: 'http://www.w3.org/2000/svg'})
 
 module.exports = {
 	global: global,

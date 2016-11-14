@@ -9,10 +9,8 @@
 ## Example
 
 ```javascript
-var createElementNS = require('create-element-ns')
-
-var el = createElementNS.el,
-    createHtmlFac = createElementNS.el({partial: true}),
+var CE = require('create-element-ns')
+var el = CE.el
 
 // selectors or attributes
 var divEl1 = el('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
@@ -63,17 +61,11 @@ Parameters and outputs
 * `elementFactory([elementDecorator|optionObject]) => el`
 
 ### Optional additional utilities
-	dom: dom,
-	namespaces: namespaces,
-	decorators: decorators,
-	html: factory(),
-	svg: factory({xmlns: 'http://www.w3.org/2000/svg'})
-}
 
-* `.dom.document` injects an external document API like `jsdom`. Uses the global `document` if not specified.
-* `.namespaces` adds additional namespace prefix (svg is already defined). E.g. `.namespaces.xlink: 'http://www.w3.org/1999/xlink'`
-* `.factory(options)` to create additional preset functions E.g. `xlink = factory({xmlns: 'http://www.w3.org/1999/xlink'})`
+* `CE.global.document` injects an external document API like `jsdom`. Uses the global `document` if not specified.
+* `CE.namespaces` adds additional namespace prefix (svg is already defined). E.g. `CE.namespaces.xlink: 'http://www.w3.org/1999/xlink'`
+* `CE.decorators` to add element decorators E.g. `CE.decorators.a = CE.decorators.attributes`
 
-# License
+## License
 
-Released under the [MIT License](http://www.opensource.org/licenses/MIT)
+[MIT](http://www.opensource.org/licenses/MIT) © [Hugo Villeneuve](https://github.com/hville)
