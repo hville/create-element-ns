@@ -1,8 +1,10 @@
 var global = require('dom-document'),
 		factory = require('./elm'),
 		decorators = require('./decorators'),
+		decorate = require('./decorate'),
 		namespaces = require('./namespaces'),
 		mergeKeys = require('./merge-keys'),
+		parseArgument = require('./parse-argument'),
 		is = require('./is')
 
 var el = factory()
@@ -13,6 +15,8 @@ module.exports = {
 	global: global,
 	namespaces: namespaces,
 	decorators: decorators,
+	decorate: decorate,
 	mergeKeys: mergeKeys,
+	parseArgument: parseArgument,
 	is: is
 }
