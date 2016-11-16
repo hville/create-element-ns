@@ -1,15 +1,17 @@
 var mergeKeys = require('./merge-keys'),
-		parseArgument = require('./parse-argument')
+		parseArgument = require('./parse-argument'),
+		decorate = require('./decorate'),
+		setChildren = require('./set-children'),
+		createElement = require('./create-element')
 
 module.exports = createFactory
 
 /**
  * creator to inject settings applicable to many instances (namespace, ...)
- * @param {function} creator - shared settings
  * @param {Object} defaults - shared settings
  * @returns {function} defining function
  */
-function createFactory(creator, defaults) {
+function createFactory(defaults) {
 	/**
 	 * definition for a given factory
 	 * @param {string|Object|function} [element] - element selector, element or factory function
@@ -22,11 +24,14 @@ function createFactory(creator, defaults) {
 		for (var i=0; i<arguments.length; ++i) mergeKeys(context, parseArgument(arguments[i], i))
 		/**
 		 * Factory function to produce instances of the defined Component
-		 * @param {any} [cfg] - optional additional individual configuration
+		 * @param {any} [opt] - optional additional individual configuration
 		 * @returns {function} individual view function
 		 */
-		function factory(cfg) {
-			return creator(context, cfg)
+		function factory(opt) {
+			var el = createElement(context)
+			decorate(el, context)
+			if (context.content) setChildren(el, context.content)
+			return opt ? decorate(el, opt) : el
 		}
 		factory.isFactory = true
 		return factory
