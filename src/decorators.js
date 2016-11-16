@@ -6,7 +6,7 @@ var decorators = {
 	properties: setProperties, props: setProperties,
 	style: setStyle,
 	dataset: setObj,
-	children: setChildren,
+	content: setChildren,
 }
 
 module.exports = decorators

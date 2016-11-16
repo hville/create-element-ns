@@ -12,8 +12,8 @@ function parseArgument(arg, idx) {
 		case 1: // second optional argument is a configuration object
 			if (is.object(arg)) return arg
 		default: // all arguments after the optional element and config are children
-			if (Array.isArray(arg)) return {children: arg}
-			if (is.stringlike(arg) || is.node(arg) || is.function(arg)) return {children: [arg]}
+			if (Array.isArray(arg)) return {content: arg}
+			if (is.stringlike(arg) || is.node(arg) || is.function(arg)) return {content: [arg]}
 	}
 	return {}
 }
