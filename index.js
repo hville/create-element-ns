@@ -1,5 +1,6 @@
 var global = require('dom-document'),
-		factory = require('./src/elm'),
+		create = require('./src/create'),
+		factory = require('./src/create-factory'),
 		decorators = require('./src/decorators'),
 		decorate = require('./src/decorate'),
 		namespaces = require('./src/namespaces'),
@@ -7,8 +8,8 @@ var global = require('dom-document'),
 		parseArgument = require('./src/parse-argument'),
 		is = require('./src/is')
 
-var el = factory()
-el.svg = factory({xmlns: 'http://www.w3.org/2000/svg'})
+var el = factory(create)
+el.svg = factory(create, {xmlns: 'http://www.w3.org/2000/svg'})
 
 module.exports = {
 	el: el,

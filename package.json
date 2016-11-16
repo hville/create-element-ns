@@ -11,7 +11,7 @@
     "namespace"
   ],
   "author": "Hugo Villeneuve",
-  "main": ".index.js",
+  "main": "./index.js",
   "dependencies": {
     "dom-document": "^1.1.0",
     "parse-element-selector": "^0.1.1"
