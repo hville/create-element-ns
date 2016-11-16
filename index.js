@@ -2,6 +2,7 @@ var global = require('dom-document'),
 		create = require('./src/create'),
 		factory = require('./src/create-factory'),
 		decorators = require('./src/decorators'),
+		setChildren = require('./src/set-children'),
 		decorate = require('./src/decorate'),
 		namespaces = require('./src/namespaces'),
 		mergeKeys = require('./src/merge-keys'),
@@ -19,5 +20,6 @@ module.exports = {
 	decorate: decorate,
 	mergeKeys: mergeKeys,
 	parseArgument: parseArgument,
-	is: is
+	is: is,
+	setChildren: setChildren
 }

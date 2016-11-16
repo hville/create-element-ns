@@ -17,6 +17,6 @@ function getElement(cfg) {
 	if (is.function(cfg.element)) return cfg.element()
 	var xmlns = cfg.xmlns || namespaces[cfg.prefix],
 			doc = dom.document,
-			tag = cfg.tag
+			tag = cfg.tag || 'div'
 	return xmlns ? doc.createElementNS(xmlns, tag) : doc.createElement(tag)
 }

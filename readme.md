@@ -13,18 +13,23 @@ var CE = require('create-element-ns')
 var el = CE.el
 
 // selectors or attributes
-var divEl1 = el('div.c1#i1[style="color:blue"].c2', {onclick: function() {}}),
-    divEl2 = el('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})
+var divEl1 = el('div.c1#i1[style="color:blue"].c2', {onclick: function() {}})(),
+    divEl2 = el('div.i1', {style: {color: 'blue'}, props:{className: 'c1 c2', , onclick: function() {}}})(),
+    divEl3 = el('div.c1#i1[style="color:blue"].c2')({onclick: function() {}}),
 
 // namespace in different ways
-var circleEl1 = el('svg:circle'),
-    circleEl2 = el.svg('circle'),
+var circleEl1 = el('svg:circle')(),
+    circleEl2 = el.svg('circle')(),
     circleEl3 = el('circle[xmlns=http://www.w3.org/2000/svg]')
-    circleEl3 = el('circle', {element: {xmlns : 'http://www.w3.org/2000/svg'}})
+    circleEl3 = el('circle', {xmlns : 'http://www.w3.org/2000/svg'})
 
 // partial application to reate multiple modified clones
-var pFactory = el('p', {textContent: 'x', partial: true}),
-    pEl1 = pFactory({textContent: 'x'})
+var pFn = el('p'),
+    pEl = pFn({textContent: 'x'})
+
+// factory functions can be nested, with or without arrays
+var olFn = el('ol', el('li', 'one'), [el('li', 'two'), el('li', 'three')]),
+    olEl = pFn()
 ```
 
 ## Features
@@ -45,20 +50,15 @@ but they either don't support *namespaces*, like *svg* or are more oriented to v
 
 ### Main methods
 
-To create an element (methods that return a DOM Element):
-* `el(definition [, options][, content])` => `HTMLElement` || `elementFactory`
-* `el.svg(definition [, options][, content])` => `SVGElement` || `elementFactory`
-
-If there is no tagName defined or if there is a partial property `{partial: true}` in the arguments,
-the function returns a factory instead of an element.
+To create an element factory (function that return a DOM Element):
+* `el(definition [, options][, content])` => `elementFactory`
+* `el.svg(definition [, options][, content])` => `elementFactory`
+* `elementFactory([optionObject])` => `DOM Element`
 
 Parameters and outputs
 * `definition`: a string selector, `elementFactory` or DOM Element
-* `options`: an optional `qualifier` object of attributes and properties or an optional `elementDecorator` function
-  * `qualifier`: {properties:{}, attributes:{}, style:{}, dataset:{}}. Alias: `props`, `attrs`
-  * `elementDecorator(el) => el'` modifies an element directly
-* `content`: optional series of string, Element and arrays of strings and Elements
-* `elementFactory([elementDecorator|optionObject]) => el`
+* `options`: {properties:{}, attributes:{}, style:{}, dataset:{}}. Alias: `props`, `attrs`
+* `content`: optional series or array of string, `Element` or `elementFactory`
 
 ### Optional additional utilities
 
