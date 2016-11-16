@@ -6,7 +6,7 @@ module.exports = {
 	stringlike: stringLike
 }
 function isNode(node) {
-	return node && node.nodeName && node.nodeType > 0
+	return node && node.nodeName && node.nodeType > 0 && node.cloneNode
 }
 function isObject(obj) {
 	return obj && ((obj.constructor === Object) || (!obj.constructor && typeof obj === 'object'))

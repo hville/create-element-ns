@@ -1,36 +1,14 @@
-var dom = require('dom-document'),
-		is = require('./is')
+var is = require('./is')
 
 var decorators = {
 	attributes: setAttributes, attrs: setAttributes,
 	properties: setProperties, props: setProperties,
 	style: setStyle,
-	dataset: setObj,
-	content: setChildren,
+	dataset: setObj
 }
 
 module.exports = decorators
 
-// setters
-function setChildren(e, k, v) { // inspired in parts from REDOM
-	if (v.length === 1 && is.stringlike(v[0]) && !e.childNodes.length) e.textContent = v[0]
-	else {
-		var ptr = e.firstChild
-		for (var i=0; i<v.length; ++i) {
-			var itm = v[i]
-			var node = is.node(itm) ? itm
-				: is.stringlike(itm) ? dom.document.createTextNode(itm)
-				: is.function(itm) ? itm()
-				: null
-			if (node && node !== ptr) e.appendChild(node, ptr)
-		}
-		while (ptr) {
-			var next = ptr.nextSibling
-			e.removeChild(ptr)
-			ptr = next
-		}
-	}
-}
 function setObj(e, k, o) {
 	for (var ki in o) e[k][ki] = o[ki]
 }

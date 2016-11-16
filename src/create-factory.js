@@ -1,7 +1,5 @@
-var CE = require('create-element-ns'),
+var mergeKeys = require('./merge-keys'),
 		parseArgument = require('./parse-argument')
-
-var mergeKeys = CE.mergeKeys
 
 module.exports = createFactory
 
