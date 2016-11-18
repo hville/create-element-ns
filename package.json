@@ -1,6 +1,6 @@
 {
   "name": "create-element-ns",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "dom createElement hyperscript with svg, namespace and selector support",
   "keywords": [
     "dom",
@@ -14,7 +14,7 @@
   "main": "./index.js",
   "dependencies": {
     "dom-document": "^1.1.0",
-    "parse-element-selector": "^0.1.1"
+    "parse-element-selector": "^0.1.3"
   },
   "devDependencies": {
     "cotest": "^1.6.1"
@@ -22,7 +22,7 @@
   "scripts": {
     "test": "cotest ./tst",
     "btest": "webpack-dev-server btest/browser.js --content-base bld/ --progress --colors",
-    "bld": "webpack ./index.js ./bld/create-element-ns.min.js --progress --colors --optimize-minimize"
+    "min": "webpack"
   },
   "repository": {
     "type": "git",

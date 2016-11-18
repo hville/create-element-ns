@@ -9,23 +9,23 @@ module.exports = createFactory
 /**
  * creator to inject settings applicable to many instances (namespace, ...)
  * @param {Object} defaults - shared settings
- * @returns {function} defining function
+ * @returns {Function} defining function
  */
 function createFactory(defaults) {
-	/**
+	/*
 	 * definition for a given factory
-	 * @param {string|Object|function} [element] - element selector, element or factory function
-	 * @param {Object} [config] - options
-	 * @param {string|number|Object|Array} [content] - child string, elements, factory or array of...
-	 * @returns {function} factory function
+	 * {string|Object|Function=} [element] - element selector, element or factory function
+	 * {Object=} [config] - options
+	 * {string|number|Object|Array=} [content] - child string, elements, factory or array of...
+	 * {Function} factory function
 	 */
-	return function define(/*element, config, content*/) {
+	return function define() {
 		var context = mergeKeys({}, defaults)
 		for (var i=0; i<arguments.length; ++i) mergeKeys(context, parseArgument(arguments[i], i))
 		/**
 		 * Factory function to produce instances of the defined Component
-		 * @param {any} [opt] - optional additional individual configuration
-		 * @returns {function} individual view function
+		 * @param {Object=} [opt] - optional additional individual configuration
+		 * @returns {Function} individual view function
 		 */
 		function factory(opt) {
 			var el = createElement(context)
