@@ -75,7 +75,7 @@ ct('decorators', function() {
 	ct('===', el.id, 'i1')
 	ct('===', el.className, 'c1 c2')
 	ct('===', el.style.color, 'blue')
-	ct('===', el.getAttribute('style'), 'color:blue')
+	ct('===', el.getAttribute('style'), 'color:blue;')
 })
 ct('element namespace', function() {
 	var el0 = svg('circle')(),
@@ -92,8 +92,8 @@ ct('styles', function() { //font-weight: bold; color: red; font-size:150%;
 			el3 = htm('div', {style: {'font-size':'150%', color:'blue'}})()
 	ct('===', el0.getAttribute('style'), 'font-size:150%;color:blue;')
 	ct('===', el1.getAttribute('style'), 'font-size:150%;color:blue')
-	ct('===', el2.getAttribute('style'), 'font-size:150%;color:blue')
-	ct('===', el3.getAttribute('style'), 'font-size:150%;color:blue')
+	ct('===', el2.getAttribute('style'), 'font-size:150%;color:blue;')
+	ct('===', el3.getAttribute('style'), 'font-size:150%;color:blue;')
 })
 ct('attribute namespace', function() {
 	var el0 = svg('circle[xmlns:xlink="http://www.w3.org/1999/xlink"]')(),

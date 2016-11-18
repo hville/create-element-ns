@@ -1,27 +1,19 @@
-var is = require('./is')
-
 var decorators = {
+	dataset: setObj,
 	attributes: setAttributes, attrs: setAttributes,
 	properties: setProperties, props: setProperties,
 	style: setStyle,
-	dataset: setObj
 }
 
 module.exports = decorators
 
+// general and dataset
 function setObj(e, k, o) {
 	for (var ki in o) e[k][ki] = o[ki]
 }
-function setStyle(e, k, v) {
-	if (e.namespaceURI) e.setAttribute(k, styleString(v))
-	else if (typeof v === 'object') setObj(e, k, v)
-	else e[k].cssText = v
-}
-function styleString(s) {
-	return is.object(s) ? Object.keys(s).map(styleToString, s).join(';') : s
-}
-function styleToString(k) {
-	return k + ':' + this[k]
+// attributes
+function setAttributes(e, k, o) {
+	for (var ki in o) setAttribute(e, ki, o[ki])
 }
 function setAttribute(e, k, v) {
 	var cIdx = k.indexOf(':')
@@ -36,9 +28,17 @@ function setAttribute(e, k, v) {
 		else e.setAttribute(k, v === true ? '' : v)
 	}
 }
+// properties
 function setProperties(e, k, o) {
 	for (var ki in o) e[ki] = o[ki]
 }
-function setAttributes(e, k, o) {
-	for (var ki in o) setAttribute(e, ki, o[ki])
+// style
+function setStyle(e, k, v) {
+	if (e.namespaceURI) e.setAttribute(k, styleString(v))
+	else if (typeof v === 'object') setObj(e, k, v)
+	else e[k].cssText = v
+}
+function styleString(o) {
+	for (var i=0, s='', ks=Object.keys(o); i<ks.length; ++i) s += ks[i] + ':' + o[ks[i]] + ';'
+	return s
 }
