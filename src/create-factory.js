@@ -12,8 +12,8 @@ module.exports = createFactory
  * @returns {Function} defining function
  */
 function createFactory(defaults) {
-	/*
-	 * definition for a given factory
+
+	/* definition for a given factory
 	 * {string|Object|Function=} [element] - element selector, element or factory function
 	 * {Object=} [config] - options
 	 * {string|number|Object|Array=} [content] - child string, elements, factory or array of...
@@ -27,13 +27,11 @@ function createFactory(defaults) {
 		 * @param {Object=} [opt] - optional additional individual configuration
 		 * @returns {Function} individual view function
 		 */
-		function factory(opt) {
+		return function factory(opt) {
 			var el = createElement(context)
 			decorate(el, context)
 			if (context.content) setChildren(el, context.content)
 			return opt ? decorate(el, opt) : el
 		}
-		factory.isFactory = true
-		return factory
 	}
 }
