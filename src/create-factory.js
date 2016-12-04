@@ -21,7 +21,9 @@ function createFactory(defaults) {
 	 */
 	return function define() {
 		var context = mergeKeys({}, defaults)
-		for (var i=0; i<arguments.length; ++i) mergeKeys(context, parseArgument(arguments[i], i))
+		for (var i=0; i<arguments.length; ++i) {
+			mergeKeys(context, parseArgument(arguments[i], i))
+		}
 		/**
 		 * Factory function to produce instances of the defined Component
 		 * @param {Object=} [opt] - optional additional individual configuration
