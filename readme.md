@@ -23,7 +23,7 @@ var circleEl1 = el('svg:circle')(),
     circleEl3 = el('circle[xmlns=http://www.w3.org/2000/svg]')
     circleEl3 = el('circle', {xmlns : 'http://www.w3.org/2000/svg'})
 
-// partial application to reate multiple modified clones
+// partial application to create multiple modified clones
 var pFn = el('p'),
     pEl = pFn({textContent: 'x'})
 
