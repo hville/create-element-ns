@@ -2,7 +2,11 @@ var decorators = {
 	dataset: setObj,
 	attributes: setAttributes, attrs: setAttributes,
 	properties: setProperties, props: setProperties,
-	style: setStyle
+	style: function setStyle(e, k, v) { // k === 'style'
+		if (e.namespaceURI) e.setAttribute(k, styleString(v))
+		else if (typeof v === 'object') setObj(e, k, v)
+		else e[k].cssText = v
+	}
 }
 
 module.exports = decorators
@@ -33,11 +37,6 @@ function setProperties(e, k, o) {
 	for (var ki in o) e[ki] = o[ki]
 }
 // style
-function setStyle(e, k, v) { // k === 'style'
-	if (e.namespaceURI) e.setAttribute(k, styleString(v))
-	else if (typeof v === 'object') setObj(e, k, v)
-	else e[k].cssText = v
-}
 function styleString(o) {
 	for (var i=0, s='', ks=Object.keys(o); i<ks.length; ++i) s += ks[i] + ':' + o[ks[i]] + ';'
 	return s
