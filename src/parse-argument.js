@@ -1,26 +1,33 @@
 var mergeKeys = require('./merge-keys'),
-		is = require('./is'),
 		parse = require('parse-element-selector'),
-		flatConcat = require('./flat-concat')
+		flatConcat = require('./flat-concat'),
+		cTyp = require('./typ')
 
 module.exports = parseArgument
 
-function parseArgument(arg, idx, definition) {
-	var def = definition || {}
-	switch (idx) { /* eslint no-fallthrough: 0 */
-		case 0: // first optional argument is an element, element selector or element factory
-			if (is.string(arg)) return parse(arg, def)
-			if (is.node(arg) || is.function(arg)) {
-				def.element = arg
-				return def
-			}
-		case 1: // second optional argument is a configuration object
-			if (is.object(arg)) return def ? mergeKeys(def, arg) : arg
+function parseArgument(arg, idx, ctx) {
+	var typ = cTyp(arg)
+	if (idx === 0) switch(typ) {
+		case String:
+			parse(arg, ctx[1])
+			return ctx
+		case Function: case 'N':
+			ctx[0] = arg
+			return ctx
 	}
-	// all arguments after the optional element and config are children
-	if (Array.isArray(arg) || is.stringlike(arg) || is.node(arg) || is.function(arg)) {
-		def.content = flatConcat(def.content || [], arg)
-		return def
+	else switch(typ) {
+		// child-like
+		case String: case Number: case Function: case 'N':
+			ctx[2].push(arg)
+			return ctx
+		// config
+		case Object:
+			mergeKeys(ctx[1], arg)
+			return ctx
+		// children
+		case Array:
+			flatConcat(ctx[2], arg)
+			return ctx
 	}
-	return {}
+	return ctx
 }

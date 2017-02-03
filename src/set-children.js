@@ -3,7 +3,7 @@ var dom = require('dom-document'),
 
 module.exports = setChildren
 
-function setChildren(e, c) { // some parts from https://github.com/pakastin/redom
+function setChildren(e, c) { // parts from https://github.com/pakastin/redom
 	if (c.length === 1 && is.stringlike(c[0])) e.textContent = c[0]
 	else {
 		var ptr = e.firstChild

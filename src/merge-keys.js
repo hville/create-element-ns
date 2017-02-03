@@ -2,9 +2,7 @@ var is = require('./is'),
 		flatConcat = require('./flat-concat')
 
 // shallow clone - 2 levels - to merge attributes, properties, elements and other options
-module.exports = mergeKeys
-
-function mergeKeys(t, s) {
+module.exports = function mergeKeys(t, s) {
 	if(is.object(s)) for (var i=0, ks=Object.keys(s); i<ks.length; ++i) {
 		var k = ks[i],
 				v = s[k]
