@@ -1,14 +1,18 @@
 var dom = require('dom-document'),
 		namespaces = require('./namespaces'),
-		is = require('./is')
+		cTyp = require('./typ')
 
 module.exports = createElement
 
 function createElement(cfg) {
-	if (is.node(cfg.element)) return cfg.element.cloneNode(true)
-	if (is.function(cfg.element)) return cfg.element()
-	var xmlns = cfg.xmlns || namespaces[cfg.prefix],
+	var elm = cfg[0],
+			def = cfg[1]
+	switch (cTyp(elm)) {
+		case 'N': return elm.cloneNode(true)
+		case Function: return elm(def)
+	}
+	var xmlns = def.xmlns || namespaces[def.prefix],
 			doc = dom.document,
-			tag = cfg.tag || 'div'
+			tag = def.tag || 'div'
 	return xmlns ? doc.createElementNS(xmlns, tag) : doc.createElement(tag)
 }

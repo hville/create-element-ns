@@ -18,19 +18,21 @@ function createFactory(defaults) {
 	 * {string|number|Object|Array=} [content] - child string, elements, factory or array of...
 	 * {Function} factory function
 	 */
-	return function define() {
-		var context = mergeKeys({}, defaults)
+	function define() {
+		var context = [null, mergeKeys({}, defaults), []]
 		for (var i=0; i<arguments.length; ++i) parseArgument(arguments[i], i, context)
 		/**
 		 * Factory function to produce instances of the defined Component
 		 * @param {Object=} [opt] - optional additional individual configuration
 		 * @returns {Function} individual view function
 		 */
-		return function factory(opt) {
+		function factory(opt) {
 			var el = createElement(context)
-			decorate(el, context)
-			if (context.content) setChildren(el, context.content)
+			decorate(el, context[1])
+			setChildren(el, context[2])
 			return opt ? decorate(el, opt) : el
 		}
+		return factory
 	}
+	return define
 }
