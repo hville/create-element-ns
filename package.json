@@ -14,10 +14,10 @@
   "main": "./index.js",
   "dependencies": {
     "dom-document": "^1.1.0",
-    "parse-element-selector": "^0.1.3"
+    "parse-element-selector": "^1.0.0"
   },
   "devDependencies": {
-    "cotest": "^1.6.1"
+    "cotest": "^2.0.2"
   },
   "scripts": {
     "test": "cotest ./tst",

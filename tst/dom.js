@@ -35,7 +35,7 @@ ct('svg attributes', function() {
 ct('svg style attributes', function() {
 	var el = svg('svg[style="display: none;"]')()
 	ct('===', el.hasAttribute('style'), true)
-	ct('===', el.getAttribute('style'), 'display: none;')
+	ct('===', el.getAttribute('style'), 'display:none;')
 })
 ct('html text nodes', function() {
 	var el = htm('div', 'one', [2, 'three'])()

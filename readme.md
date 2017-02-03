@@ -57,7 +57,7 @@ To create an element factory (function that return a DOM Element):
 
 Parameters and outputs
 * `definition`: a string selector, `elementFactory` or DOM Element
-* `options`: {properties:{}, attributes:{}, style:{}, dataset:{}}. Alias: `props`, `attrs`
+* `options`: `{properties:{}, attributes:{}, style:{}, dataset:{}}` or `{props:{}, attrs:{}, style:{}, dataset:{}}`
 * `content`: optional series or array of string, `Element` or `elementFactory`
 
 ### Optional additional utilities
