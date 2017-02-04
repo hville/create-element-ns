@@ -1,24 +1,33 @@
 var dom = require('dom-document'),
-		is = require('./is')
+		cTyp = require('./typ')
 
 module.exports = setChildren
 
-function setChildren(e, c) { // parts from https://github.com/pakastin/redom
-	if (c.length === 1 && is.stringlike(c[0])) e.textContent = c[0]
-	else {
-		var ptr = e.firstChild
-		for (var i=0; i<c.length; ++i) {
-			var itm = c[i]
-			var node = is.node(itm) ? itm.cloneNode(true)
-				: is.stringlike(itm) ? dom.document.createTextNode(itm)
-				: is.function(itm) ? itm()
-				: null
-			if (node && node !== ptr) e.appendChild(node, ptr)
-		}
-		while (ptr) {
-			var next = ptr.nextSibling
-			e.removeChild(ptr)
-			ptr = next
-		}
+function setChildren(e, c) {
+	if (c.length === 1) switch (cTyp(c[0])) {
+		case Number: case String: return e.textContent = c[0]
+	}
+
+	var ptr = e.firstChild
+	for (var i=0; i<c.length; ++i) {
+		var node = getNode(c[i])
+		if (node && node !== ptr) e.appendChild(node, ptr)
+	}
+	while (ptr) {
+		var next = ptr.nextSibling
+		e.removeChild(ptr)
+		ptr = next
+	}
+}
+function getNode(itm) {
+	switch (cTyp(itm)) {
+		case 'N':
+			return itm.cloneNode(true)
+		case Function:
+			return itm()
+		case Number:
+			return dom.document.createTextNode(itm)
+		case String: //skip empty string
+			if (itm) return dom.document.createTextNode(itm)
 	}
 }
