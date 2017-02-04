@@ -8,6 +8,21 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [3.2.0] - 2017-02-02
+### Changed
+- argument parsing refactoring
+- code simplifications
+- updated dependencies
+
+
+## [3.1.0] - 2017-02-02
+### Added
+- `CHANGELOG.md`
+- `.editorconfig`
+
+### Fixed
+- removed reference to `Object.assign` for Explorer compatibility
+
 
 ## [3.1.0] - 2017-02-02
 ### Added
