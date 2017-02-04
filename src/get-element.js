@@ -1,6 +1,6 @@
 var dom = require('dom-document'),
 		namespaces = require('./namespaces'),
-		cTyp = require('./typ'),
+		typ = require('./typ'),
 		setChildren = require('./set-children'),
 		decorators = require('./decorators')
 
@@ -15,10 +15,10 @@ function getElement(elmx, defx, cntx) {
 	return el
 }
 function element(elm, def) {
-	switch (cTyp(elm)) {
-		case 'N':
+	switch (typ(elm)) {
+		case typ.E:
 			return elm.cloneNode(true)
-		case Function:
+		case typ.F:
 			return elm(def)
 		default:
 			var xmlns = def.xmlns || namespaces[def.prefix],

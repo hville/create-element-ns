@@ -1,21 +1,21 @@
 var flatConcat = require('./flat-concat'),
-		cTyp = require('./typ')
+		typ = require('./typ')
 
 // shallow clone - 2 levels - to merge attributes, properties, elements and other options
 module.exports = function mergeKeys(tgt, src) {
-	if(cTyp(src) === Object) for (var i=0, ks=Object.keys(src); i<ks.length; ++i) {
+	if(typ(src) === typ.O) for (var i=0, ks=Object.keys(src); i<ks.length; ++i) {
 		var key = ks[i]
 		tgt[key] = merge(tgt[key], src[key])
 	}
 	return tgt
 }
 function merge(tgt, src) {
-	switch(cTyp(src)) {
-		case Array:
+	switch(typ(src)) {
+		case typ.A:
 			return flatConcat(tgt || [], src)
-		case 'N':
+		case typ.E:
 			return src.cloneNode(true)
-		case Object:
+		case typ.O:
 			return assign(tgt || {}, src)
 		default:
 			return src

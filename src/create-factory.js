@@ -1,7 +1,7 @@
 var mergeKeys = require('./merge-keys'),
 		parse = require('parse-element-selector'),
 		flatConcat = require('./flat-concat'),
-		cTyp = require('./typ')
+		typ = require('./typ')
 
 module.exports = createFactory
 
@@ -23,11 +23,11 @@ function createFactory(creator, defaults) {
 				cnt = [],
 				elm
 
-		switch(cTyp(sel)) {
-			case String:
+		switch(typ(sel)) {
+			case typ.S:
 				parse(sel, dex)
 				break
-			case Function: case 'N':
+			case typ.F: case typ.E:
 				elm = sel
 				break
 			default:
@@ -36,11 +36,11 @@ function createFactory(creator, defaults) {
 
 		for (var i=1; i<arguments.length; ++i) {
 			var arg = arguments[i]
-			switch(cTyp(arg)) {
-				case Object: // config
+			switch(typ(arg)) {
+				case typ.O: // config
 					mergeKeys(dex, arg)
 					break
-				case Array: case String: case Number: case Function: case 'N': // child-like
+				case typ.A: case typ.S: case typ.N: case typ.F: case typ.E: // child-like
 					flatConcat(cnt, arg)
 					break
 			}

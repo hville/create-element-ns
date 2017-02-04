@@ -1,11 +1,11 @@
 var dom = require('dom-document'),
-		cTyp = require('./typ')
+		typ = require('./typ')
 
 module.exports = setChildren
 
 function setChildren(e, c) {
-	if (c.length === 1) switch (cTyp(c[0])) {
-		case Number: case String: return e.textContent = c[0]
+	if (c.length === 1) switch (typ(c[0])) {
+		case typ.N: case typ.S: return e.textContent = c[0]
 	}
 
 	var ptr = e.firstChild
@@ -20,14 +20,14 @@ function setChildren(e, c) {
 	}
 }
 function getNode(itm) {
-	switch (cTyp(itm)) {
-		case 'N':
+	switch (typ(itm)) {
+		case typ.E:
 			return itm.cloneNode(true)
-		case Function:
+		case typ.F:
 			return itm()
-		case Number:
+		case typ.N:
 			return dom.document.createTextNode(itm)
-		case String: //skip empty string
+		case typ.S: //skip empty string
 			if (itm) return dom.document.createTextNode(itm)
 	}
 }
