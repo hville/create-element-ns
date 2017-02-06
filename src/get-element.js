@@ -6,12 +6,12 @@ var dom = require('dom-document'),
 
 module.exports = getElement
 
-function getElement(elmx, defx, cntx) {
-	var el = element(elmx, defx)
-	if (defx) for (var k in decorators) {
-		if (defx[k]) decorators[k](el, k, defx[k])
+function getElement(elm, def, cnt) {
+	var el = element(elm, def)
+	if (def) for (var k in decorators) {
+		if (def[k]) decorators[k](el, k, def[k])
 	}
-	if (cntx && cntx.length) setChildren(el, cntx)
+	if (cnt && cnt.length) setChildren(el, cnt)
 	return el
 }
 function element(elm, def) {

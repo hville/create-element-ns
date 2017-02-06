@@ -8,7 +8,7 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
-## [3.2.0] - 2017-02-02
+## [3.2.1] - 2017-02-06
 ### Changed
 - argument parsing refactoring
 - code simplifications
