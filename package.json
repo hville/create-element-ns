@@ -1,6 +1,6 @@
 {
   "name": "create-element-ns",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "dom createElement hyperscript with svg, namespace and selector support",
   "keywords": [
     "dom",
@@ -14,7 +14,7 @@
   "main": "./index.js",
   "dependencies": {
     "dom-document": "^1.1.0",
-    "parse-element-selector": "^1.0.0"
+    "parse-element-selector": "^1.1.0"
   },
   "devDependencies": {
     "cotest": "^2.0.2"

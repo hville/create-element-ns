@@ -8,6 +8,11 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [3.3.0] - 2017-02-25
+### Changed
+- updated dependency to remove whitespace removal and allow space seperated SVG attributes
+
+
 ## [3.2.1] - 2017-02-06
 ### Changed
 - argument parsing refactoring
